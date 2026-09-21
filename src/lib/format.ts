@@ -9,7 +9,10 @@ const keyFormat = new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeri
 
 export const formatTime = (value: string | Date) => timeFormat.format(new Date(value));
 export const formatDayShort = (value: string | Date) => dayShortFormat.format(new Date(value)).replaceAll(".", "");
-export const formatDayLong = (value: string | Date) => dayLongFormat.format(new Date(value));
+const capitalizeFirst = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
+/** "Terça-feira, 22 de setembro": só a primeira letra maiúscula. */
+export const formatDayLong = (value: string | Date) => capitalizeFirst(dayLongFormat.format(new Date(value)));
 export const formatDateTime = (value: string | Date) => `${formatDayLong(value)}, às ${formatTime(value)}`;
 
 /** Data no formato AAAA-MM-DD, no fuso do estúdio. */

@@ -73,7 +73,7 @@ export default async function MyBookingsPage({ searchParams }: PageProps<"/minha
               <article key={row.id} className={`${card} flex flex-wrap items-center justify-between gap-4 p-4 sm:p-5`}>
                 <div>
                   <h3 className="font-semibold">{session.services?.name}</h3>
-                  <p className="text-sm capitalize text-muted">{formatDateTime(session.starts_at)}</p>
+                  <p className="text-sm text-muted">{formatDateTime(session.starts_at)}</p>
                   <p className="text-sm text-muted">com {session.instructor}</p>
                 </div>
                 {changeable ? (

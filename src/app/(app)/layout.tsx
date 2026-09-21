@@ -19,7 +19,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <header className="border-b border-border bg-surface">
         <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-8">
           <Logo href={homeFor(viewer)} />
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 sm:order-3">
             <p className="hidden text-sm text-muted sm:block">
               {viewer.fullName}
               {viewer.role === "manager" ? " · gestão" : ""}
@@ -30,7 +30,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
               </SubmitButton>
             </form>
           </div>
-          <nav aria-label="Principal" className="flex w-full gap-1 overflow-x-auto sm:w-auto sm:order-none">
+          <nav aria-label="Principal" className="order-3 flex w-full gap-1 overflow-x-auto sm:order-2 sm:w-auto sm:flex-1 sm:pl-6">
             {links.map((link) => (
               <Link
                 key={link.href}

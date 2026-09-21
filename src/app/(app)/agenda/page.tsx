@@ -63,7 +63,7 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
       </nav>
 
       <section aria-label={`Aulas de ${formatDayLong(keyToDate(day))}`} className="grid gap-3">
-        <h2 className="text-lg font-semibold capitalize">{formatDayLong(keyToDate(day))}</h2>
+        <h2 className="text-lg font-semibold">{formatDayLong(keyToDate(day))}</h2>
         {sessions.length === 0 ? (
           <p className={`${card} p-6 text-muted`}>Nenhuma aula com esses filtros neste dia. Experimente outro dia ou modalidade.</p>
         ) : (
@@ -84,7 +84,7 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
 
                 <div className="flex items-center gap-4">
                   <p className={`text-sm font-medium ${full ? "text-danger" : "text-muted"}`}>
-                    {session.booked_by_me ? "Você está inscrito" : full ? "Lotada" : `${free} de ${session.capacity} ${free === 1 ? "vaga" : "vagas"}`}
+                    {session.booked_by_me ? "Você está inscrito" : full ? "Lotada" : `${free} ${free === 1 ? "vaga livre" : "vagas livres"} de ${session.capacity}`}
                   </p>
                   {session.booked_by_me ? (
                     <Link href="/minhas-reservas" className="text-sm font-semibold text-brand underline underline-offset-2">

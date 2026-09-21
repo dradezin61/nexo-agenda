@@ -56,7 +56,7 @@ export default async function ReschedulePage({ params, searchParams }: PageProps
           ← Minhas reservas
         </Link>
         <h1 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">Remarcar aula</h1>
-        <p className="mt-1 capitalize text-muted">
+        <p className="mt-1 text-muted">
           Atual: {current.services?.name}, {formatDateTime(current.starts_at)}
         </p>
       </div>
@@ -76,7 +76,7 @@ export default async function ReschedulePage({ params, searchParams }: PageProps
           <p className="text-muted">Escolha o novo horário (mesma modalidade, próximas duas semanas):</p>
           {[...byDay.entries()].map(([day, list]) => (
             <section key={day} className="grid gap-2">
-              <h2 className="font-semibold capitalize">{formatDayLong(list[0].starts_at)}</h2>
+              <h2 className="font-semibold">{formatDayLong(list[0].starts_at)}</h2>
               <div className="flex flex-wrap gap-2">
                 {list.map((option) => (
                   <form key={option.id} action={rescheduleBooking}>

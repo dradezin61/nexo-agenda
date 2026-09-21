@@ -78,7 +78,7 @@ export default async function ManagementPage({ searchParams }: PageProps<"/gesta
       </dl>
 
       <section aria-label={`Aulas de ${formatDayLong(keyToDate(day))}`} className="grid gap-3">
-        <h2 className="text-lg font-semibold capitalize">{formatDayLong(keyToDate(day))}</h2>
+        <h2 className="text-lg font-semibold">{formatDayLong(keyToDate(day))}</h2>
         {sessions.length === 0 ? (
           <p className={`${card} p-6 text-muted`}>Nenhuma aula neste dia.</p>
         ) : (
@@ -101,7 +101,7 @@ export default async function ManagementPage({ searchParams }: PageProps<"/gesta
                   </div>
                   <div className="min-w-40 text-right">
                     <p className="text-sm font-medium">
-                      {session.attendees.length} de {session.capacity} vagas ocupadas
+                      {session.attendees.length} de {session.capacity} {session.capacity === 1 ? "vaga ocupada" : "vagas ocupadas"}
                     </p>
                     <div className="mt-2 h-2 rounded-full bg-surface-muted" aria-hidden="true">
                       <div className="h-2 rounded-full bg-brand" style={{ width: `${ratio}%` }} />
