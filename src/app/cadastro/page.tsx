@@ -20,7 +20,7 @@ export default async function SignUpPage({ searchParams }: PageProps<"/cadastro"
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 py-10">
       <Logo />
       <div className={`${card} mt-8 p-6 sm:p-8`}>
-        <h1 className="text-2xl font-bold tracking-tight">Criar conta</h1>
+        <h1 className="font-display text-2xl font-semibold tracking-tight">Criar conta</h1>
         <p className="mt-2 text-sm text-muted">Leva menos de um minuto e você já pode reservar.</p>
         <div className="mt-4">
           <Flash erro={typeof erro === "string" ? erro : undefined} />

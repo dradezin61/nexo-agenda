@@ -1,9 +1,9 @@
-import { author } from "@/lib/studio";
+import { author, studio } from "@/lib/studio";
 
 export function DemoBanner() {
   return (
     <div className="bg-brand-strong px-4 py-2 text-center text-xs text-white/90 sm:text-sm">
-      Projeto de demonstração: o estúdio Nexo e os dados são fictícios. Desenvolvido por{" "}
+      Demonstração funcional de um estúdio fictício: {studio.name} e seus dados não existem. Desenvolvido por{" "}
       <a
         href={author.portfolio}
         target="_blank"

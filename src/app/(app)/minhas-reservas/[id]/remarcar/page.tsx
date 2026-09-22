@@ -55,7 +55,7 @@ export default async function ReschedulePage({ params, searchParams }: PageProps
         <Link href="/minhas-reservas" className="text-sm font-semibold text-brand underline underline-offset-2">
           ← Minhas reservas
         </Link>
-        <h1 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">Remarcar aula</h1>
+        <h1 className="mt-3 font-display text-2xl font-semibold tracking-tight sm:text-3xl">Remarcar aula</h1>
         <p className="mt-1 text-muted">
           Atual: {current.services?.name}, {formatDateTime(current.starts_at)}
         </p>

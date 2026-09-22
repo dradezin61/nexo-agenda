@@ -2,16 +2,17 @@
 // supabase/migrations/0003_seed_catalog.sql.
 
 export const studio = {
-  name: "Nexo",
+  name: "Cadência",
+  tagline: "Studio de Pilates",
   city: "São Paulo",
   timeZone: "America/Sao_Paulo",
   changeDeadlineHours: 2,
 } as const;
 
 export const services = [
-  { id: 1, slug: "solo", name: "Solo", capacity: 1, duration: 50, description: "Aula individual, com atenção total do instrutor." },
-  { id: 2, slug: "dupla", name: "Dupla", capacity: 2, duration: 50, description: "Para treinar em dupla, com correções individuais." },
-  { id: 3, slug: "turma", name: "Turma", capacity: 8, duration: 55, description: "Aula em grupo de até 8 pessoas, no ritmo da turma." },
+  { id: 1, slug: "solo", name: "Solo", capacity: 1, duration: 50, description: "Atenção individual para acompanhar cada movimento." },
+  { id: 2, slug: "dupla", name: "Dupla", capacity: 2, duration: 50, description: "Compartilhe a prática com acompanhamento próximo." },
+  { id: 3, slug: "turma", name: "Turma", capacity: 8, duration: 55, description: "Movimento em grupo, respeitando o ritmo de cada pessoa." },
 ] as const;
 
 export const instructors = ["Marina Costa", "Rafael Lima", "Júlia Alves"] as const;

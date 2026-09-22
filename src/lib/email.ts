@@ -1,15 +1,15 @@
 import { Resend } from "resend";
 
 import { formatDateTime } from "@/lib/format";
-import { author } from "@/lib/studio";
+import { author, studio } from "@/lib/studio";
 
 type Message = { to: string; subject: string; heading: string; lines: string[] };
 
-/** "Nexo Agenda <contato@exemplo.com>" separado em nome e endereço. */
+/** "Cadência <contato@exemplo.com>" separado em nome e endereço. */
 function sender() {
-  const raw = process.env.EMAIL_FROM?.trim() || "Nexo Agenda <onboarding@resend.dev>";
+  const raw = process.env.EMAIL_FROM?.trim() || `${studio.name} <onboarding@resend.dev>`;
   const parts = raw.match(/^(.*?)\s*<([^>]+)>$/);
-  return { name: parts?.[1]?.trim() || "Nexo Agenda", email: (parts?.[2] ?? raw).trim() };
+  return { name: parts?.[1]?.trim() || studio.name, email: (parts?.[2] ?? raw).trim() };
 }
 
 /**
@@ -53,7 +53,7 @@ async function sendWithResend({ to, subject, heading, lines }: Message) {
   const finalSubject = testRecipient && testRecipient !== to ? `${subject} [para ${to}]` : subject;
 
   const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
-    from: process.env.EMAIL_FROM || "Nexo Agenda <onboarding@resend.dev>",
+    from: process.env.EMAIL_FROM || `${studio.name} <onboarding@resend.dev>`,
     to: recipient,
     subject: finalSubject,
     html: render(heading, lines),
@@ -63,7 +63,7 @@ async function sendWithResend({ to, subject, heading, lines }: Message) {
   if (error) console.error(`[email] falha ao enviar "${subject}" para ${recipient}: ${error.message}`);
 }
 
-const footerText = `Nexo é um estúdio fictício. Projeto de demonstração de ${author.name}: ${author.portfolio}`;
+const footerText = `${studio.name} é um estúdio fictício. Demonstração funcional desenvolvida por ${author.name}: ${author.portfolio}`;
 
 const escape = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -72,7 +72,7 @@ function render(heading: string, lines: string[]) {
   const body = lines.map((line) => `<p style="margin:0 0 12px;line-height:1.55">${escape(line)}</p>`).join("");
   return `<!doctype html><html lang="pt-BR"><body style="margin:0;background:#f6f2ec;font-family:Arial,sans-serif;color:#1e2b27">
 <div style="max-width:520px;margin:0 auto;padding:32px 24px">
-<p style="margin:0 0 24px;font-weight:700;color:#2f5d50;font-size:18px">Nexo Agenda</p>
+<p style="margin:0 0 24px;font-weight:700;color:#2f5d50;font-size:18px">${escape(studio.name)}</p>
 <div style="background:#ffffff;border:1px solid #e2dace;border-radius:12px;padding:24px">
 <h1 style="margin:0 0 16px;font-size:20px">${escape(heading)}</h1>${body}</div>
 <p style="margin:24px 0 0;font-size:12px;color:#5c6b66;line-height:1.5">${escape(footerText)}</p>
@@ -137,7 +137,7 @@ export function sendSessionCancelledByStudio(to: string, name: string, info: Cla
 export function sendPasswordReset(to: string, name: string, link: string) {
   return send({
     to,
-    subject: "Crie uma nova senha no Nexo Agenda",
+    subject: `Crie uma nova senha no ${studio.name}`,
     heading: "Redefinição de senha",
     lines: [
       `Olá, ${name}.`,

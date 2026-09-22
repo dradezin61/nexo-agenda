@@ -16,7 +16,7 @@ export default async function ForgotPasswordPage({ searchParams }: PageProps<"/e
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 py-10">
       <Logo />
       <div className={`${card} mt-8 p-6 sm:p-8`}>
-        <h1 className="text-2xl font-bold tracking-tight">Esqueci minha senha</h1>
+        <h1 className="font-display text-2xl font-semibold tracking-tight">Esqueci minha senha</h1>
         <p className="mt-2 text-sm text-muted">
           Informe o e-mail da sua conta. Enviaremos um link para você criar uma nova senha.
         </p>

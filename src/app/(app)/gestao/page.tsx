@@ -56,7 +56,7 @@ export default async function ManagementPage({ searchParams }: PageProps<"/gesta
   return (
     <div className="grid gap-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Gestão do estúdio</h1>
+        <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">Gestão do estúdio</h1>
         <p className="mt-1 text-muted">Agenda do dia, lotação das turmas e quem está inscrito.</p>
       </div>
 

@@ -1,8 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { signInDemo } from "@/app/auth-actions";
 import { Logo } from "@/components/logo";
+import { ServiceIcon } from "@/components/service-icon";
 import { SubmitButton } from "@/components/submit-button";
 import { btnPrimary, btnSecondary, card } from "@/components/ui";
 import { getViewer, homeFor } from "@/lib/auth";
@@ -26,26 +28,28 @@ export default async function Home() {
           <Link href="/entrar" className={btnSecondary}>
             Entrar
           </Link>
-          <Link href="/cadastro" className={`${btnPrimary} hidden sm:inline-flex`}>
-            Criar conta
-          </Link>
+          {/* Envolvido para esconder no celular: a classe de display do botão venceria um `hidden` solto. */}
+          <span className="hidden sm:block">
+            <Link href="/cadastro" className={btnPrimary}>
+              Criar conta
+            </Link>
+          </span>
         </nav>
       </header>
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-5 pb-20 sm:px-8">
-        <section className="grid items-center gap-10 py-10 lg:grid-cols-2 lg:py-16">
+        <section className="grid items-center gap-10 py-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-16">
           <div>
-            <p className="text-sm font-semibold text-brand">Studio de pilates · {studio.city}</p>
-            <h1 className="mt-3 text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-              Sua aula de pilates, reservada em poucos cliques.
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand">{studio.tagline}</p>
+            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.25rem]">
+              Movimento, equilíbrio e tempo para você.
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted">
-              Horários, vagas e reservas em um só lugar. Sem mensagens soltas, sem planilha: o estúdio acompanha tudo em
-              um painel de gestão.
+              Encontre sua aula de pilates, escolha o melhor horário e reserve seu momento de cuidado.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/cadastro" className={btnPrimary}>
-                Criar conta e reservar
+                Agendar minha aula
               </Link>
               <Link href="/entrar" className={btnSecondary}>
                 Já tenho conta
@@ -53,39 +57,56 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className={`${card} p-6 sm:p-7`}>
-            <h2 className="text-lg font-semibold">Teste sem se cadastrar</h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              Entre com uma conta de demonstração e experimente os dois lados do sistema.
-            </p>
-            <div className="mt-5 grid gap-3">
-              <form action={signInDemo.bind(null, "student")}>
-                <SubmitButton className={`${btnPrimary} w-full`} pendingLabel="Entrando…">
-                  Entrar como aluno
-                </SubmitButton>
-              </form>
-              <form action={signInDemo.bind(null, "manager")}>
-                <SubmitButton className={`${btnSecondary} w-full`} pendingLabel="Entrando…">
-                  Entrar como gestão do estúdio
-                </SubmitButton>
-              </form>
-            </div>
-            <p className="mt-4 text-xs leading-relaxed text-muted">
-              Os e-mails de confirmação das contas de demonstração não chegam a nenhuma caixa real.
-            </p>
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-surface p-2 shadow-sm">
+            <Image
+              src="/estudio-pilates.png"
+              alt="Cena ilustrativa de uma aula de pilates no Reformer, acompanhada por uma instrutora."
+              width={928}
+              height={1152}
+              sizes="(min-width: 1024px) 460px, (min-width: 640px) 520px, 100vw"
+              priority
+              className="aspect-4/5 w-full rounded-xl object-cover"
+            />
           </div>
         </section>
 
-        <section aria-labelledby="modalidades" className="py-8">
-          <h2 id="modalidades" className="text-2xl font-bold tracking-tight">
+        <section aria-labelledby="demonstracao" className={`${card} flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7`}>
+          <div className="max-w-md">
+            <h2 id="demonstracao" className="font-display text-xl font-semibold">
+              Teste sem se cadastrar
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted">
+              Entre com uma conta de demonstração e experimente os dois lados do sistema. Os e-mails dessas contas não
+              chegam a nenhuma caixa real.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:w-72 sm:shrink-0">
+            <form action={signInDemo.bind(null, "student")}>
+              <SubmitButton className={`${btnPrimary} w-full`} pendingLabel="Entrando…">
+                Entrar como aluno
+              </SubmitButton>
+            </form>
+            <form action={signInDemo.bind(null, "manager")}>
+              <SubmitButton className={`${btnSecondary} w-full`} pendingLabel="Entrando…">
+                Entrar como gestão do estúdio
+              </SubmitButton>
+            </form>
+          </div>
+        </section>
+
+        <section aria-labelledby="modalidades" className="py-12">
+          <h2 id="modalidades" className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
             Modalidades
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             {services.map((service) => (
-              <article key={service.id} className={`${card} p-5`}>
-                <h3 className="font-semibold">{service.name}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{service.description}</p>
-                <p className="mt-4 text-sm font-medium">
+              <article key={service.id} className={`${card} flex flex-col p-5`}>
+                <span className="inline-flex size-11 items-center justify-center rounded-full bg-brand-soft text-brand">
+                  <ServiceIcon slug={service.slug} />
+                </span>
+                <h3 className="mt-4 font-display text-lg font-semibold">{service.name}</h3>
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{service.description}</p>
+                <p className="mt-4 border-t border-border pt-3 text-sm font-medium">
                   {service.duration} min · até {service.capacity} {service.capacity === 1 ? "pessoa" : "pessoas"}
                 </p>
               </article>
@@ -93,8 +114,8 @@ export default async function Home() {
           </div>
         </section>
 
-        <section aria-labelledby="como-funciona" className="py-8">
-          <h2 id="como-funciona" className="text-2xl font-bold tracking-tight">
+        <section aria-labelledby="como-funciona" className="pb-4">
+          <h2 id="como-funciona" className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
             Como funciona
           </h2>
           <ol className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -111,7 +132,9 @@ export default async function Home() {
 
       <footer className="border-t border-border">
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-5 py-6 text-sm text-muted sm:flex-row sm:justify-between sm:px-8">
-          <p>Nexo Agenda · estúdio fictício para demonstração</p>
+          <p>
+            {studio.name} · {studio.tagline} · estúdio fictício para demonstração
+          </p>
           <a href={author.repository} target="_blank" rel="noreferrer" className="font-medium text-brand underline underline-offset-2">
             Ver o código no GitHub
           </a>

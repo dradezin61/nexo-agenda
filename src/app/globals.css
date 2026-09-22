@@ -33,6 +33,7 @@
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-lora), ui-serif, Georgia, serif;
 }
 
 body {

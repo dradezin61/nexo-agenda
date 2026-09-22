@@ -46,7 +46,7 @@ export default async function MyBookingsPage({ searchParams }: PageProps<"/minha
   return (
     <div className="grid gap-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Minhas reservas</h1>
+        <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">Minhas reservas</h1>
         <p className="mt-1 text-muted">
           Você pode cancelar ou remarcar até {studio.changeDeadlineHours} horas antes da aula.
         </p>

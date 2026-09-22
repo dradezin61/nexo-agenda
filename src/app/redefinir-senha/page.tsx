@@ -22,7 +22,7 @@ export default async function ResetPasswordPage({ searchParams }: PageProps<"/re
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 py-10">
       <Logo />
       <div className={`${card} mt-8 p-6 sm:p-8`}>
-        <h1 className="text-2xl font-bold tracking-tight">Crie uma nova senha</h1>
+        <h1 className="font-display text-2xl font-semibold tracking-tight">Crie uma nova senha</h1>
         <p className="mt-2 text-sm text-muted">
           Conta: <span className="font-semibold text-foreground">{viewer.email}</span>
         </p>

@@ -1,7 +1,10 @@
-# Nexo Agenda
+# Cadência — Studio de Pilates
 
-Sistema de agendamento de aulas para um estúdio de pilates. **Projeto de
-demonstração:** o estúdio Nexo, os instrutores e os alunos são fictícios.
+Sistema de agendamento de aulas para um estúdio de pilates. **Demonstração
+funcional:** o estúdio Cadência, os instrutores e os alunos são fictícios.
+
+O repositório e o endereço de publicação mantêm o nome antigo do projeto
+(`nexo-agenda`): a troca foi apenas do nome público.
 
 Desenvolvido por [Gabriel Andrade](https://gabriel-andrade-omega.vercel.app/).
 
