@@ -102,3 +102,17 @@ export function sendSessionCancelledByStudio(to: string, name: string, info: Cla
     ],
   });
 }
+
+export function sendPasswordReset(to: string, name: string, link: string) {
+  return send({
+    to,
+    subject: "Crie uma nova senha no Nexo Agenda",
+    heading: "Redefinição de senha",
+    lines: [
+      `Olá, ${name}.`,
+      "Recebemos um pedido para criar uma nova senha para a sua conta. Para continuar, abra o link abaixo:",
+      link,
+      "O link vale por 1 hora e só pode ser usado uma vez. Se não foi você quem pediu, é só ignorar este e-mail: sua senha atual continua valendo.",
+    ],
+  });
+}

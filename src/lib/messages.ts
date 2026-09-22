@@ -5,6 +5,8 @@ const success = {
   aula_criada: "Aula criada e disponível para reserva.",
   aula_cancelada: "Aula cancelada. Os alunos inscritos foram avisados por e-mail.",
   bem_vindo: "Conta criada. Escolha um horário para a sua primeira aula.",
+  link_enviado: "Se existir uma conta com esse e-mail, enviamos um link para criar uma nova senha. Confira também o spam.",
+  senha_alterada: "Senha alterada. Use a nova senha nos próximos acessos.",
 } as const;
 
 const errors = {
@@ -26,6 +28,9 @@ const errors = {
   email_em_uso: "Já existe uma conta com esse e-mail. Tente entrar.",
   senha_fraca: "Essa senha é muito fraca. Use pelo menos 8 caracteres, misturando letras e números.",
   dados_invalidos: "Confira os dados do formulário.",
+  senhas_diferentes: "As duas senhas não são iguais. Digite a mesma senha nos dois campos.",
+  mesma_senha: "A nova senha precisa ser diferente da atual.",
+  link_invalido: "Esse link expirou ou já foi usado. Peça um novo abaixo.",
   demo_indisponivel: "A conta de demonstração não está disponível no momento.",
   erro_inesperado: "Algo deu errado. Tente de novo em instantes.",
 } as const;

@@ -10,7 +10,8 @@ Desenvolvido por [Gabriel Andrade](https://gabriel-andrade-omega.vercel.app/).
 ## O que funciona
 
 **Aluno**
-- Cria conta e entra com e-mail e senha.
+- Cria conta e entra com e-mail e senha. Esqueceu a senha? Recebe por e-mail um
+  link de uso único (válido por 1 hora) para criar outra.
 - Vê a agenda da semana por dia e modalidade (Solo, Dupla, Turma), com vagas em
   tempo real.
 - Reserva, cancela e remarca aulas. Cancelamento e remarcação só até 2 horas
@@ -79,7 +80,9 @@ src/
   app/
     page.tsx                  página inicial e acesso de demonstração
     entrar/, cadastro/        autenticação
+    esqueci-senha/, redefinir-senha/, auth/confirmar/   nova senha por e-mail
     auth-actions.ts           entrar, criar conta, sair
+    password-actions.ts       pedir link e salvar nova senha
     (app)/                    área logada
       agenda/                 horários e reserva
       minhas-reservas/        cancelar e remarcar
