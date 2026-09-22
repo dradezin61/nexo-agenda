@@ -5,6 +5,8 @@ demonstração:** o estúdio Nexo, os instrutores e os alunos são fictícios.
 
 Desenvolvido por [Gabriel Andrade](https://gabriel-andrade-omega.vercel.app/).
 
+**Demonstração:** https://nexo-agenda-gamma.vercel.app/ — entre como aluno ou como gestão, sem cadastro.
+
 ## O que funciona
 
 **Aluno**

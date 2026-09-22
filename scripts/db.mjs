@@ -125,10 +125,11 @@ async function seed() {
   }
   console.log(`  reservas fictícias criadas: ${bookings}`);
 
-  // Duas reservas para o aluno de demonstração, para "Minhas reservas" não começar vazia.
+  // Duas reservas futuras para o aluno de demonstração, para "Minhas reservas" não aparecer vazia.
   const studentId = ids["aluno.demo@example.com"];
   const hasBookings = await db.query(
-    "select 1 from public.bookings where user_id = $1 and status = 'confirmed' limit 1",
+    `select 1 from public.bookings b join public.class_sessions cs on cs.id = b.session_id
+      where b.user_id = $1 and b.status = 'confirmed' and cs.starts_at > now() limit 1`,
     [studentId],
   );
   if (!hasBookings.rowCount) {
