@@ -33,8 +33,8 @@ como gestão do estúdio", para testar sem cadastro.
   Tailwind CSS.
 - **Supabase:** Postgres e autenticação. A sessão fica em cookies (`@supabase/ssr`)
   e é renovada em `src/proxy.ts`.
-- **Resend:** e-mails de confirmação, enviados com `after()` para não atrasar a
-  resposta.
+- **Brevo ou Resend:** e-mails de confirmação e de nova senha, enviados com
+  `after()` para não atrasar a resposta.
 - **Zod:** validação dos formulários no servidor.
 
 ### Regras no banco de dados
@@ -64,14 +64,20 @@ npm run db:seed              # contas de demonstração, aulas e reservas fictí
 npm run dev
 ```
 
-As variáveis estão descritas em `.env.example`. Sem `RESEND_API_KEY`, o app
-funciona normalmente e só não envia e-mails.
+As variáveis estão descritas em `.env.example`.
 
-### Sobre os e-mails na demonstração
+### Sobre o envio de e-mails
 
-Sem um domínio próprio verificado no Resend, os e-mails só podem ser entregues
-ao endereço da conta do Resend. Por isso existe `EMAIL_TEST_RECIPIENT`: todos os
-e-mails vão para esse endereço, com o destinatário original no assunto.
+O app usa o provedor que estiver configurado:
+
+- **Brevo** (`BREVO_API_KEY`): entrega no e-mail de cada usuário. Basta verificar
+  o endereço remetente, sem precisar de domínio próprio.
+- **Resend** (`RESEND_API_KEY`): entrega a qualquer pessoa só com domínio próprio
+  verificado. Sem domínio, entrega apenas no endereço da conta; por isso existe
+  `EMAIL_TEST_RECIPIENT`, que manda todos os e-mails para lá com o destinatário
+  original no assunto.
+
+Sem nenhuma das duas chaves, o app funciona normalmente e só não envia e-mails.
 
 ## Estrutura
 

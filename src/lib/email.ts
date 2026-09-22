@@ -5,23 +5,54 @@ import { author } from "@/lib/studio";
 
 type Message = { to: string; subject: string; heading: string; lines: string[] };
 
-/**
- * Envia pelo Resend. Sem domínio próprio verificado, o Resend só entrega para o
- * e-mail da conta; EMAIL_TEST_RECIPIENT redireciona tudo para lá, mantendo o
- * destinatário original no assunto. Falhas são registradas e não quebram a ação.
- */
-async function send({ to, subject, heading, lines }: Message) {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn(`[email] RESEND_API_KEY ausente; e-mail não enviado: ${subject}`);
-    return;
-  }
+/** "Nexo Agenda <contato@exemplo.com>" separado em nome e endereço. */
+function sender() {
+  const raw = process.env.EMAIL_FROM?.trim() || "Nexo Agenda <onboarding@resend.dev>";
+  const parts = raw.match(/^(.*?)\s*<([^>]+)>$/);
+  return { name: parts?.[1]?.trim() || "Nexo Agenda", email: (parts?.[2] ?? raw).trim() };
+}
 
+/**
+ * Escolhe o provedor pela chave que estiver configurada. O Brevo entrega no
+ * e-mail de quem se cadastrou, bastando um remetente verificado. O Resend exige
+ * domínio próprio: sem ele, só entrega no endereço da conta, então
+ * EMAIL_TEST_RECIPIENT redireciona tudo para lá com o destinatário no assunto.
+ * Falhas são registradas e não quebram a ação em andamento.
+ */
+async function send(message: Message) {
+  if (process.env.BREVO_API_KEY) return sendWithBrevo(message);
+  if (process.env.RESEND_API_KEY) return sendWithResend(message);
+  console.warn(`[email] nenhuma chave de envio configurada; e-mail não enviado: ${message.subject}`);
+}
+
+async function sendWithBrevo({ to, subject, heading, lines }: Message) {
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "api-key": process.env.BREVO_API_KEY!,
+      "content-type": "application/json",
+      accept: "application/json",
+    },
+    body: JSON.stringify({
+      sender: sender(),
+      to: [{ email: to }],
+      subject,
+      htmlContent: render(heading, lines),
+      textContent: [heading, "", ...lines, "", footerText].join("\n"),
+    }),
+  });
+
+  if (!response.ok) {
+    console.error(`[email] Brevo recusou "${subject}" para ${to}: ${response.status} ${await response.text()}`);
+  }
+}
+
+async function sendWithResend({ to, subject, heading, lines }: Message) {
   const testRecipient = process.env.EMAIL_TEST_RECIPIENT?.trim();
   const recipient = testRecipient || to;
   const finalSubject = testRecipient && testRecipient !== to ? `${subject} [para ${to}]` : subject;
 
-  const { error } = await new Resend(apiKey).emails.send({
+  const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
     from: process.env.EMAIL_FROM || "Nexo Agenda <onboarding@resend.dev>",
     to: recipient,
     subject: finalSubject,
