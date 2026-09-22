@@ -24,6 +24,7 @@ const errors = {
   forbidden: "Você não tem permissão para essa ação.",
   credenciais: "E-mail ou senha incorretos.",
   email_em_uso: "Já existe uma conta com esse e-mail. Tente entrar.",
+  senha_fraca: "Essa senha é muito fraca. Use pelo menos 8 caracteres, misturando letras e números.",
   dados_invalidos: "Confira os dados do formulário.",
   demo_indisponivel: "A conta de demonstração não está disponível no momento.",
   erro_inesperado: "Algo deu errado. Tente de novo em instantes.",

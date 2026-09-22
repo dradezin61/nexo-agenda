@@ -59,14 +59,16 @@ export async function signUp(formData: FormData) {
     email_confirm: true,
     user_metadata: { full_name: fullName },
   });
-  if (error) {
-    const alreadyExists = error.status === 422 || /already|registered|exists/i.test(error.message);
-    redirect(`/cadastro?erro=${alreadyExists ? "email_em_uso" : "erro_inesperado"}`);
+  const alreadyExists = error?.code === "email_exists" || error?.code === "user_already_exists";
+  if (error && !alreadyExists) {
+    redirect(`/cadastro?erro=${error.code === "weak_password" ? "senha_fraca" : "erro_inesperado"}`);
   }
 
+  // Se a conta já existe (por exemplo, o formulário foi enviado duas vezes e a
+  // primeira tentativa já a criou), a senha certa simplesmente faz o login.
   const supabase = await createClient();
   const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-  if (signInError) redirect("/entrar?erro=erro_inesperado");
+  if (signInError) redirect(`/cadastro?erro=${alreadyExists ? "email_em_uso" : "erro_inesperado"}`);
   redirect("/agenda?ok=bem_vindo");
 }
 
