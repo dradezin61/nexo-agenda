@@ -1,11 +1,11 @@
 const success = {
-  reservado: "Reserva confirmada. Enviamos a confirmação por e-mail.",
-  cancelado: "Reserva cancelada. Enviamos a confirmação por e-mail.",
-  remarcado: "Aula remarcada. Enviamos os novos detalhes por e-mail.",
+  reservado: "Reserva confirmada. Consulte os detalhes em Minhas reservas.",
+  cancelado: "Reserva cancelada.",
+  remarcado: "Aula remarcada. Confira o novo horário em Minhas reservas.",
   aula_criada: "Aula criada e disponível para reserva.",
-  aula_cancelada: "Aula cancelada. Os alunos inscritos foram avisados por e-mail.",
+  aula_cancelada: "Aula cancelada. As reservas dessa aula foram desfeitas.",
   bem_vindo: "Conta criada. Escolha um horário para a sua primeira aula.",
-  link_enviado: "Se existir uma conta com esse e-mail, enviamos um link para criar uma nova senha. Confira também o spam.",
+  link_enviado: "Se existir uma conta com esse e-mail, o link para criar uma nova senha segue para lá. Confira também o spam.",
   senha_alterada: "Senha alterada. Use a nova senha nos próximos acessos.",
 } as const;
 

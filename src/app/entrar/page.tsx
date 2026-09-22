@@ -50,18 +50,11 @@ export default async function SignInPage({ searchParams }: PageProps<"/entrar">)
 
       <div className={`${card} mt-4 p-6`}>
         <h2 className="font-semibold">Só quer conhecer o sistema?</h2>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <form action={signInDemo.bind(null, "student")}>
-            <SubmitButton className={`${btnSecondary} w-full`} pendingLabel="Entrando…">
-              Demonstração: aluno
-            </SubmitButton>
-          </form>
-          <form action={signInDemo.bind(null, "manager")}>
-            <SubmitButton className={`${btnSecondary} w-full`} pendingLabel="Entrando…">
-              Demonstração: gestão
-            </SubmitButton>
-          </form>
-        </div>
+        <form action={signInDemo} className="mt-4">
+          <SubmitButton className={`${btnSecondary} w-full`} pendingLabel="Entrando…">
+            Entrar com conta de teste
+          </SubmitButton>
+        </form>
       </div>
     </main>
   );

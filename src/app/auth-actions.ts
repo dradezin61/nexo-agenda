@@ -36,10 +36,15 @@ export async function signIn(formData: FormData) {
   await signInAndGo(parsed.data.email, parsed.data.password, "/entrar");
 }
 
-export async function signInDemo(role: keyof typeof demoAccounts) {
+/**
+ * Conta de teste pública: só a de aluno. O acesso de gestão não é oferecido
+ * publicamente porque a gestão enxerga os cadastros e as reservas de todos —
+ * o papel dessa conta também foi revogado no banco.
+ */
+export async function signInDemo() {
   const password = process.env.DEMO_PASSWORD;
   if (!password) redirect("/entrar?erro=demo_indisponivel");
-  await signInAndGo(demoAccounts[role], password, "/entrar");
+  await signInAndGo(demoAccounts.student, password, "/entrar");
 }
 
 export async function signUp(formData: FormData) {

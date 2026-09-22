@@ -1,9 +1,15 @@
 import { Resend } from "resend";
 
 import { formatDateTime } from "@/lib/format";
-import { author, studio } from "@/lib/studio";
+import { isTestAccount, studio } from "@/lib/studio";
 
 type Message = { to: string; subject: string; heading: string; lines: string[] };
+
+/**
+ * Resultado do envio. Aceito pelo provedor não é o mesmo que entregue na caixa
+ * de entrada, por isso nenhuma tela afirma entrega a partir daqui.
+ */
+export type SendOutcome = "aceito_pelo_provedor" | "dispensado_conta_de_teste" | "sem_configuracao" | "falhou";
 
 /** "Cadência <contato@exemplo.com>" separado em nome e endereço. */
 function sender() {
@@ -17,17 +23,36 @@ function sender() {
  * e-mail de quem se cadastrou, bastando um remetente verificado. O Resend exige
  * domínio próprio: sem ele, só entrega no endereço da conta, então
  * EMAIL_TEST_RECIPIENT redireciona tudo para lá com o destinatário no assunto.
- * Falhas são registradas e não quebram a ação em andamento.
+ *
+ * Contas de teste são descartadas antes de qualquer chamada ao provedor e antes
+ * de qualquer redirecionamento de destinatário. Nada aqui interrompe a operação
+ * que originou o e-mail: o retorno é só para registro.
  */
-async function send(message: Message) {
-  if (process.env.BREVO_API_KEY) return sendWithBrevo(message);
-  if (process.env.RESEND_API_KEY) return sendWithResend(message);
-  console.warn(`[email] nenhuma chave de envio configurada; e-mail não enviado: ${message.subject}`);
+async function send(message: Message): Promise<SendOutcome> {
+  if (isTestAccount(message.to)) {
+    console.info(`[email] dispensado: destinatário é conta de teste ("${message.subject}")`);
+    return "dispensado_conta_de_teste";
+  }
+
+  try {
+    if (process.env.BREVO_API_KEY) return await sendWithBrevo(message);
+    if (process.env.RESEND_API_KEY) return await sendWithResend(message);
+    console.warn(`[email] sem chave de envio configurada; nada foi enviado ("${message.subject}")`);
+    return "sem_configuracao";
+  } catch (error) {
+    // Só o tipo/motivo, nunca corpo, destinatário ou credenciais.
+    console.error(`[email] exceção ao enviar "${message.subject}": ${error instanceof Error ? error.name : "desconhecida"}`);
+    return "falhou";
+  }
 }
 
-async function sendWithBrevo({ to, subject, heading, lines }: Message) {
+/** 10 segundos: uma indisponibilidade do provedor não pode segurar a resposta. */
+const timeout = () => AbortSignal.timeout(10_000);
+
+async function sendWithBrevo({ to, subject, heading, lines }: Message): Promise<SendOutcome> {
   const response = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
+    signal: timeout(),
     headers: {
       "api-key": process.env.BREVO_API_KEY!,
       "content-type": "application/json",
@@ -43,11 +68,13 @@ async function sendWithBrevo({ to, subject, heading, lines }: Message) {
   });
 
   if (!response.ok) {
-    console.error(`[email] Brevo recusou "${subject}" para ${to}: ${response.status} ${await response.text()}`);
+    console.error(`[email] Brevo recusou "${subject}": HTTP ${response.status}`);
+    return "falhou";
   }
+  return "aceito_pelo_provedor";
 }
 
-async function sendWithResend({ to, subject, heading, lines }: Message) {
+async function sendWithResend({ to, subject, heading, lines }: Message): Promise<SendOutcome> {
   const testRecipient = process.env.EMAIL_TEST_RECIPIENT?.trim();
   const recipient = testRecipient || to;
   const finalSubject = testRecipient && testRecipient !== to ? `${subject} [para ${to}]` : subject;
@@ -60,10 +87,14 @@ async function sendWithResend({ to, subject, heading, lines }: Message) {
     text: [heading, "", ...lines, "", footerText].join("\n"),
   });
 
-  if (error) console.error(`[email] falha ao enviar "${subject}" para ${recipient}: ${error.message}`);
+  if (error) {
+    console.error(`[email] Resend recusou "${subject}": ${error.name}`);
+    return "falhou";
+  }
+  return "aceito_pelo_provedor";
 }
 
-const footerText = `${studio.name} é um estúdio fictício. Demonstração funcional desenvolvida por ${author.name}: ${author.portfolio}`;
+const footerText = `${studio.name} · ${studio.tagline}`;
 
 const escape = (value: string) =>
   value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");

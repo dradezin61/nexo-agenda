@@ -5,9 +5,12 @@ import { Logo } from "@/components/logo";
 import { SubmitButton } from "@/components/submit-button";
 import { btnSecondary } from "@/components/ui";
 import { homeFor, requireViewer } from "@/lib/auth";
+import { isTestAccount } from "@/lib/studio";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const viewer = await requireViewer();
+  // Identificado pela sessão do servidor, não por um parâmetro do navegador.
+  const contaDeTeste = isTestAccount(viewer.email);
   const links = [
     { href: "/agenda", label: "Agenda" },
     { href: "/minhas-reservas", label: "Minhas reservas" },
@@ -20,10 +23,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-8">
           <Logo href={homeFor(viewer)} />
           <div className="flex items-center gap-3 sm:order-3">
-            <p className="hidden text-sm text-muted sm:block">
-              {viewer.fullName}
-              {viewer.role === "manager" ? " · gestão" : ""}
-            </p>
+            {contaDeTeste ? (
+              <p className="text-xs font-medium text-muted sm:text-sm">Conta de teste — sem envio de e-mails.</p>
+            ) : (
+              <p className="hidden text-sm text-muted sm:block">
+                {viewer.fullName}
+                {viewer.role === "manager" ? " · gestão" : ""}
+              </p>
+            )}
             <form action={signOut}>
               <SubmitButton className={btnSecondary} pendingLabel="Saindo…">
                 Sair

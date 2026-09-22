@@ -12,7 +12,7 @@ import { author, services, studio } from "@/lib/studio";
 
 const steps = [
   { title: "Escolha a aula", text: "Veja os horários da semana por modalidade e as vagas disponíveis em tempo real." },
-  { title: "Reserve em um clique", text: "A vaga fica garantida na hora e a confirmação chega por e-mail." },
+  { title: "Reserve em um clique", text: "A vaga fica garantida na hora e aparece em Minhas reservas." },
   { title: "Mude de planos sem ligar", text: `Cancele ou remarque até ${studio.changeDeadlineHours} horas antes, direto em Minhas reservas.` },
 ];
 
@@ -70,28 +70,20 @@ export default async function Home() {
           </div>
         </section>
 
-        <section aria-labelledby="demonstracao" className={`${card} flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7`}>
+        <section aria-labelledby="conta-de-teste" className={`${card} flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6`}>
           <div className="max-w-md">
-            <h2 id="demonstracao" className="font-display text-xl font-semibold">
-              Teste sem se cadastrar
+            <h2 id="conta-de-teste" className="font-semibold">
+              Conhecer sem se cadastrar
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              Entre com uma conta de demonstração e experimente os dois lados do sistema. Os e-mails dessas contas não
-              chegam a nenhuma caixa real.
+            <p className="mt-1.5 text-sm leading-relaxed text-muted">
+              Entre com uma conta de teste e percorra a agenda, as reservas e a remarcação.
             </p>
           </div>
-          <div className="grid gap-3 sm:w-72 sm:shrink-0">
-            <form action={signInDemo.bind(null, "student")}>
-              <SubmitButton className={`${btnPrimary} w-full`} pendingLabel="Entrando…">
-                Entrar como aluno
-              </SubmitButton>
-            </form>
-            <form action={signInDemo.bind(null, "manager")}>
-              <SubmitButton className={`${btnSecondary} w-full`} pendingLabel="Entrando…">
-                Entrar como gestão do estúdio
-              </SubmitButton>
-            </form>
-          </div>
+          <form action={signInDemo} className="sm:shrink-0">
+            <SubmitButton className={`${btnSecondary} w-full sm:w-auto`} pendingLabel="Entrando…">
+              Entrar com conta de teste
+            </SubmitButton>
+          </form>
         </section>
 
         <section aria-labelledby="modalidades" className="py-12">
@@ -131,13 +123,18 @@ export default async function Home() {
       </main>
 
       <footer className="border-t border-border">
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-5 py-6 text-sm text-muted sm:flex-row sm:justify-between sm:px-8">
-          <p>
-            {studio.name} · {studio.tagline} · estúdio fictício para demonstração
+        <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-5 py-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <p className="font-medium text-foreground">
+            {studio.name} · {studio.tagline}
           </p>
-          <a href={author.repository} target="_blank" rel="noreferrer" className="font-medium text-brand underline underline-offset-2">
-            Ver o código no GitHub
-          </a>
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <a href={author.portfolio} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-foreground">
+              Desenvolvido por {author.name}
+            </a>
+            <a href={author.repository} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-foreground">
+              GitHub
+            </a>
+          </p>
         </div>
       </footer>
     </>

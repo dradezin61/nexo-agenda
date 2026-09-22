@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Lora, Plus_Jakarta_Sans } from "next/font/google";
 
-import { DemoBanner } from "@/components/demo-banner";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -29,10 +28,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${jakarta.variable} ${lora.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">
-        <DemoBanner />
-        {children}
-      </body>
+      <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );
 }

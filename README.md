@@ -8,7 +8,7 @@ O repositório e o endereço de publicação mantêm o nome antigo do projeto
 
 Desenvolvido por [Gabriel Andrade](https://gabriel-andrade-omega.vercel.app/).
 
-**Demonstração:** https://nexo-agenda-gamma.vercel.app/ — entre como aluno ou como gestão, sem cadastro.
+**Acesse:** https://nexo-agenda-gamma.vercel.app/ — há uma conta de teste de aluno, sem cadastro.
 
 ## O que funciona
 
@@ -24,11 +24,15 @@ Desenvolvido por [Gabriel Andrade](https://gabriel-andrade-omega.vercel.app/).
 **Gestão do estúdio**
 - Agenda do dia com lotação de cada aula e a lista de inscritos.
 - Indicadores do dia: aulas, alunos confirmados e ocupação.
-- Cria aulas avulsas e cancela aulas. Ao cancelar, cada inscrito recebe um aviso
-  por e-mail.
+- Cria aulas avulsas e cancela aulas. Ao cancelar, as reservas são desfeitas e
+  cada inscrito recebe um aviso por e-mail.
 
-**Contas de demonstração:** na página inicial há "Entrar como aluno" e "Entrar
-como gestão do estúdio", para testar sem cadastro.
+**Conta de teste:** a página inicial oferece uma conta de teste **de aluno**. O
+painel de gestão não tem acesso público: ele lê os cadastros e as reservas de
+todos os usuários, então depende de uma conta própria, promovida com
+`npm run db:gestor -- seu@email` (ver `supabase/migrations/0006_revoga_gestao_publica.sql`).
+Os endereços das contas de teste são de exemplo e não recebem e-mail: o envio é
+dispensado antes de chamar o provedor.
 
 ## Como é feito
 

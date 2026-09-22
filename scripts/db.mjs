@@ -20,9 +20,12 @@ const db = new pg.Client({
   ssl: { rejectUnauthorized: false },
 });
 
+// A conta de teste pública é só de aluno. Gestão se concede a uma conta própria
+// (`node scripts/db.mjs gestor <e-mail>`): o painel lê os cadastros e as reservas
+// de todos, então não pode ficar atrás de um botão público.
 const DEMO_USERS = [
   { email: "aluno.demo@example.com", fullName: "Aluno Demonstração", role: "student", demo: true },
-  { email: "gestor.demo@example.com", fullName: "Gestão Demonstração", role: "manager", demo: true },
+  { email: "gestor.demo@example.com", fullName: "Gestão Demonstração", role: "student", demo: true },
 ];
 
 const FICTIONAL_STUDENTS = [
@@ -146,16 +149,40 @@ async function seed() {
   }
 }
 
+/**
+ * Promove uma conta já existente a gestora do estúdio. Fica fora das migrações
+ * para o e-mail do responsável não ir para o repositório, e é o caminho para ter
+ * gestão sem expor o painel em um botão público.
+ */
+async function grantManager(email) {
+  const { rows } = await db.query(
+    `update public.profiles p set role = 'manager'
+       from auth.users u
+      where u.id = p.id and lower(u.email) = lower($1)
+      returning p.full_name`,
+    [email],
+  );
+  if (!rows.length) throw new Error("Nenhuma conta com esse e-mail. Crie a conta no app antes de promovê-la.");
+  console.log(`  ${rows[0].full_name} agora é gestor(a) do estúdio.`);
+}
+
 const command = process.argv[2];
-if (!["migrate", "seed"].includes(command)) {
-  console.error("Use: node scripts/db.mjs migrate | seed");
+const argument = process.argv[3];
+if (!["migrate", "seed", "gestor"].includes(command) || (command === "gestor" && !argument)) {
+  console.error("Use: node scripts/db.mjs migrate | seed | gestor <e-mail>");
   process.exit(1);
 }
 
 await db.connect();
 try {
-  console.log(command === "migrate" ? "Aplicando migrações..." : "Preparando dados de demonstração...");
-  await (command === "migrate" ? migrate() : seed());
+  console.log(
+    command === "migrate"
+      ? "Aplicando migrações..."
+      : command === "seed"
+        ? "Preparando dados de demonstração..."
+        : "Promovendo a conta a gestora...",
+  );
+  await (command === "migrate" ? migrate() : command === "seed" ? seed() : grantManager(argument));
   console.log("Pronto.");
 } catch (error) {
   console.error(error.message);

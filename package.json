@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:migrate": "node scripts/db.mjs migrate",
-    "db:seed": "node scripts/db.mjs seed"
+    "db:seed": "node scripts/db.mjs seed",
+    "db:gestor": "node scripts/db.mjs gestor"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
